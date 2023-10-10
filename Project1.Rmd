@@ -1,0 +1,68 @@
+---
+title: "Project 1"
+author: "Mehal Agrawal"
+date: "2023-09-19"
+output: html_document
+---
+
+```{r global options, echo=FALSE}
+knitr::opts_chunk$set(fig.height=5, fig.width=7, warning=FALSE, echo=FALSE, tidy=TRUE, tidy.opts=list(width.cutoff=60))
+```
+
+```{r}
+books <-read.csv("Project1_books.csv")
+```
+# **Introduction**
+### This report investigates popular books and their features. The dataset used is obtained from the CORGIS Dataset Project and was built by Austin Cory Bart. It contains the title of the book, author, author's birth year, author's death year, publication year, grade level, the average letters per word, average sentence length, number of sentences, and the number of times it has been downloaded. This report specifically analyzes the number of times the book has been dowloaded in relation to the average number of letters per word, average sentence length,and the number of sentences.
+<center>
+
+![Hayes, Dennis. The 50 great books on education. 31 Mar. 2014. The Conversation, https://theconversation.com/the-50-great-books-on-education-24934. Accessed 20 Sept. 2023.](/Users/mehalagrawal/Downloads/books.avif){width=70%}
+<center>
+# **Number of Downloads**
+```{r}
+library(ggplot2)
+books_ggplot= ggplot(books)
+books_ggplot+ geom_histogram(aes(Downloads), binwidth=1000, col="seagreen", fill="lightblue") + labs(title="Number of Downloads",x="Number of Downloads")
+```
+
+The histogram is skewed right. The mean of the number of downloads is `r round(mean(books$Downloads),2)` and the median is `r round(median(books$Downloads),2)`. The maximum number of downloads is `r round(max(books$Downloads),2)` while `r round(min(books$Downloads),2)` is the minimum.
+
+# **Downloads Relationship with Predictor Variables**
+```{r}
+books_ggplot + geom_point(aes(x=books$AvgLettersPerWord, y=books$Downloads), col="deepskyblue", pch=20) + labs(title="Average Letters per Word versus Number of Downloads", x="Average Number of Letters per Word",y="Number of Downloads")
+
+books_ggplot + geom_point(aes(x=books$AvgLettersPerWord, y=books$Downloads), col="deepskyblue4", pch=20) + xlim(c(0,7)) + ylim(c(0,2000)) + labs(title="Zoomed in Average Letters per Word versus Number of Downloads", x="Average Number of Letters per Word",y="Number of Downloads")
+```
+
+The correlation coefficient between Average Number of Letters per Word and Number of Downlaods is `r round(cor(books$AvgLettersPerWord, books$Downloads),2)`. This indicates a weak, negative relatioship between Letters per Word and the Number of Downloads. The second graph provides a zoomed in version of the cluster present in the first graph. It has an x limit of 7 and a y limit of 2000. 
+
+
+```{r}
+books_ggplot + geom_point(aes(x=books$AvgSentenceLength, y=books$Downloads), col="darkgoldenrod1", pch=20) + labs(title="Average Sentence Length versus Number of Downloads", x="Average Sentence Length",y="Number of Downloads")
+
+books_ggplot + geom_point(aes(x=books$AvgSentenceLength, y=books$Downloads), col="darkgoldenrod3", pch=20) + xlim(c(0,50)) + ylim(c(0,2000)) + labs(title="Zoomed in Average Sentence Length versus Number of Downloads", x="Average Sentence Length",y="Number of Downloads")
+
+```
+
+The correlation coefficient between Average Sentence Length and Number of Downloads is `r round(cor(books$AvgSentenceLength, books$Downloads),2)`. This indicates a very weak negative relatiosnhip between the Average Sentence Length and the number of times the book has been Downloaded. The second graph provides a zoomed in version of the cluster present in the first graph. It has an x limit of 50 and a y limit of 2000. 
+
+
+```{r}
+books_ggplot + geom_point(aes(x=books$NumberSentences, y=books$Downloads), col="deeppink2", pch=20) + labs(title="Number of Sentences versus Number of Downloads", x="Number of Sentences",y="Number of Downloads")
+books_ggplot + geom_point(aes(x=books$NumberSentences, y=books$Downloads), col="deeppink3", pch=20) + xlim(c(0,10000)) + ylim(c(0,5000)) + labs(title=" Zoomed in Number of Sentences versus Number of Downloads", x="Number of Sentences",y="Number of Downloads")
+
+```
+
+The correlation coefficient between Number of Sentences and Number of Downloads is `r round(cor(books$NumberSentences, books$Downloads),2)`. This indicates a very weak, positive relationship between the Number of Sentences and the number of times it has been downloaded. The second graph provides a zoomed in version of the cluster present in the first graph. It has an x limit of 10000 and a y limit of 5000. 
+
+# **Conclusion**
+This report investigated the relationship between the number of times a book has been downloaded and three predictor variables. The histogram of the number of downloads is skewed right indicating more books being downloded less with a mean of 1556.7 downloads. The relationship between the the average letters per word and the number of downloads had a very weak negative relationship. Similarly, averge sentence length and number of downloads also had a very weak negative relationship. However, Number of sentences and number of downloads had a weak postive relationship. From the r values, we can conclude that the there is a very weak linear relationship between the number of downloads and our three predictor variables. In order to understand the relationships better, we should attempt to observe the graphs with and without the outliers. This will help us investigate a more clear relationship between the predictor variables and our outcome variable. 
+
+# **References**
+All books (sorted by popularity). Project Gutenberg. (n.d.). https://www.gutenberg.org/ebooks/search/?sort_order=downloads 
+
+Hayes, Dennis. The 50 great books on education. 31 Mar. 2014. The Conversation, https://theconversation.com/the-50-great-books-on-education-24934. Accessed 20 Sept. 2023.
+
+
+
+
